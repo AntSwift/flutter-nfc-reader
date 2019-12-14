@@ -21,8 +21,6 @@ import java.io.IOException
 const val PERMISSION_NFC = 1007
 
 class FlutterNfcReaderPlugin(val registrar: Registrar) : MethodCallHandler, EventChannel.StreamHandler, NfcAdapter.ReaderCallback {
-    public const Tag = "FlutterNfcReaderPlugin"
-
     private val activity = registrar.activity()
 
     private var nfcAdapter: NfcAdapter? = null
@@ -47,6 +45,8 @@ class FlutterNfcReaderPlugin(val registrar: Registrar) : MethodCallHandler, Even
             NfcAdapter.FLAG_READER_NFC_V
 
     companion object {
+        const val Tag = "FlutterNfcReaderPlugin"
+
         @JvmStatic
         fun registerWith(registrar: Registrar): Unit {
             val messenger = registrar.messenger()
