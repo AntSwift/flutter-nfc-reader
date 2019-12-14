@@ -21,6 +21,7 @@ import java.io.IOException
 const val PERMISSION_NFC = 1007
 
 class FlutterNfcReaderPlugin(val registrar: Registrar) : MethodCallHandler, EventChannel.StreamHandler, NfcAdapter.ReaderCallback {
+    public const Tag = "FlutterNfcReaderPlugin"
 
     private val activity = registrar.activity()
 
@@ -132,7 +133,6 @@ class FlutterNfcReaderPlugin(val registrar: Registrar) : MethodCallHandler, Even
         return false
     }
 
-
     override fun onMethodCall(call: MethodCall, result: Result): Unit {
 
         if (nfcAdapter?.isEnabled != true) {
@@ -151,6 +151,7 @@ class FlutterNfcReaderPlugin(val registrar: Registrar) : MethodCallHandler, Even
             }
 
             "NfcWrite" -> {
+                Log.i(Tag, "onMethodCall: NfcWrite")
                 writeResult = result
                 kWrite = call.argument("label")!!
                 kPath = call.argument("path")!!
@@ -174,16 +175,17 @@ class FlutterNfcReaderPlugin(val registrar: Registrar) : MethodCallHandler, Even
         eventChannel =  null;
     }
 
-
     private fun stopNFC() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             nfcAdapter?.disableReaderMode(activity)
         }
     }
 
-
     private fun writeTag() {
+        Log.i(Tag, "writeTag")
         if (writeResult != null) {
+            Log.i(Tag, "writeTag: writeResult != null")
+
             val nfcRecord = NdefRecord(NdefRecord.TNF_EXTERNAL_TYPE, kPath.toByteArray(), ByteArray(0), kWrite.toByteArray())
             val nfcMessage = NdefMessage(arrayOf(nfcRecord))
             writeMessageToTag(nfcMessage, tag)
@@ -193,9 +195,10 @@ class FlutterNfcReaderPlugin(val registrar: Registrar) : MethodCallHandler, Even
                 writeResult?.success(data)
                 writeResult = null
             }
+        } else {
+            Log.w(Tag, "writeTag: writeResult is NULL, skipping write.")
         }
     }
-
 
     private fun readTag() {
         if (readResult != null) {
