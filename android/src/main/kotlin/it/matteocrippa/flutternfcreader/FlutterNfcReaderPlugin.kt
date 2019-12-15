@@ -191,8 +191,8 @@ class FlutterNfcReaderPlugin(val registrar: Registrar) : MethodCallHandler, Even
 
     private fun writeTag() {
         Log.v(logTag, "writing tag")
-        if (writeResult != null) {
-            Log.v(logTag, "have writeResult")
+        //if (writeResult != null) {
+            //Log.v(logTag, "have writeResult")
             val nfcRecord = NdefRecord(NdefRecord.TNF_EXTERNAL_TYPE, kPath.toByteArray(), ByteArray(0), kWrite.toByteArray())
             val nfcMessage = NdefMessage(arrayOf(nfcRecord))
             writeMessageToTag(nfcMessage, tag)
@@ -202,7 +202,7 @@ class FlutterNfcReaderPlugin(val registrar: Registrar) : MethodCallHandler, Even
                 writeResult?.success(data)
                 writeResult = null
             }
-        }
+        //}
     }
 
 
