@@ -231,12 +231,12 @@ class FlutterNfcReaderPlugin(val registrar: Registrar) : MethodCallHandler, Even
 
             try {
                 ndef?.connect()
-            } catch (IllegalStateException e) {
+            } catch (e: IllegalStateException) {
                 ndef?.close()
-                Log.e(e);
+                Log.e(logTag, "error connecting", e);
             }
-            
-            ndef?.connect()
+
+            //ndef?.connect()
 
             val ndefMessage = ndef?.ndefMessage ?: ndef?.cachedNdefMessage
             val message = ndefMessage?.toByteArray()
