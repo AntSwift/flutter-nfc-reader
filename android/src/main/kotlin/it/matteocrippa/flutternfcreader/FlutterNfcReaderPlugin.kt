@@ -228,7 +228,16 @@ class FlutterNfcReaderPlugin(val registrar: Registrar) : MethodCallHandler, Even
             Log.v(logTag, "readResult null")
             // convert tag to NDEF tag
             val ndef = Ndef.get(tag)
+
+            try {
+                ndef?.connect()
+            } catch (IllegalStateException e) {
+                ndef?.close()
+                Log.e(e);
+            }
+            
             ndef?.connect()
+
             val ndefMessage = ndef?.ndefMessage ?: ndef?.cachedNdefMessage
             val message = ndefMessage?.toByteArray()
                     ?.toString(Charset.forName("UTF-8")) ?: ""
